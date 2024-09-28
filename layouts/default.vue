@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen bg-background">
     <header class="border-b fixed top-0 left-0 right-0 bg-background z-10">
-      <div class="container mx-auto h-16 flex justify-between items-center">
+      <div
+        class="md:container px-3 md:px-0 mx-auto h-16 flex justify-between items-center"
+      >
         <h1 class="text-2xl font-bold hidden md:block">Fortune Companies</h1>
         <div class="flex items-center space-x-4 w-full md:w-auto">
           <div class="flex-grow md:flex-grow-0 md:w-64">
@@ -11,7 +13,7 @@
         </div>
       </div>
     </header>
-    <main class="container mx-auto py-6 pt-20">
+    <main class="md:container px-4 md:px-0 mx-auto py-6 pt-20">
       <slot />
     </main>
   </div>
