@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
         .select()
         .from(Companies)
         .orderBy(asc(Companies.rank))
-        .limit(100);
+        .limit(20);
     } else {
       results = await db
         .select()
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
           ),
         )
         .orderBy(asc(Companies.rank))
-        .limit(100);
+        .limit(20);
     }
 
     return results;

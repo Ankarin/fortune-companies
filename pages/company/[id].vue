@@ -22,9 +22,10 @@ import { useRoute } from "vue-router";
 import CompanyDetail from "@/components/CompanyDetail.vue";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
+import type { CompanyShort } from "~/server/db/schema";
 
 const route = useRoute();
-const company = ref<Company | null>(null);
+const company = ref<CompanyShort | null>(null);
 const isLoading = ref(true);
 const error = ref<string | null>(null);
 
