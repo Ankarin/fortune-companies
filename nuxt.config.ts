@@ -5,6 +5,7 @@ export default defineNuxtConfig({
       meta: [{ name: "application-name", content: "Fortune Companies" }],
     },
   },
+  plugins: ["~/plugins/vue-query.ts"],
   typescript: {
     tsConfig: {
       compilerOptions: {

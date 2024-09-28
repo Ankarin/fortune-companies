@@ -75,16 +75,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "vue-router";
 import type { CompanyShort } from "~/server/db/schema";
+import { formatNumber } from "../../lib/utils";
 
 const router = useRouter();
 
 defineProps<{
   companies: CompanyShort[];
 }>();
-
-const formatNumber = (num: number | null) => {
-  return num !== null ? num.toLocaleString() : "N/A";
-};
 
 const navigateToCompanyDetails = (companyId: string) => {
   router.push(`/company/${companyId}`);
