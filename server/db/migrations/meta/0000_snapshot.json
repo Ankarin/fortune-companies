@@ -1,0 +1,225 @@
+{
+  "id": "fe074c28-83a3-4ecc-a6da-fc21271b84aa",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.companies": {
+      "name": "companies",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Rank": {
+          "name": "Rank",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Company": {
+          "name": "Company",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Ticker": {
+          "name": "Ticker",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Sector": {
+          "name": "Sector",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Industry": {
+          "name": "Industry",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Profitable": {
+          "name": "Profitable",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Founder_is_CEO": {
+          "name": "Founder_is_CEO",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "FemaleCEO": {
+          "name": "FemaleCEO",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Growth_in_Jobs": {
+          "name": "Growth_in_Jobs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Change_in_Rank": {
+          "name": "Change_in_Rank",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Gained_in_Rank": {
+          "name": "Gained_in_Rank",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Dropped_in_Rank": {
+          "name": "Dropped_in_Rank",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Newcomer_to_the_Fortune500": {
+          "name": "Newcomer_to_the_Fortune500",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Global500": {
+          "name": "Global500",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Worlds_Most_Admired_Companies": {
+          "name": "Worlds_Most_Admired_Companies",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Best_Companies_to_Work_For": {
+          "name": "Best_Companies_to_Work_For",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Number_of_employees": {
+          "name": "Number_of_employees",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MarketCap_March28_M": {
+          "name": "MarketCap_March28_M",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Revenues_M": {
+          "name": "Revenues_M",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "RevenuePercentChange": {
+          "name": "RevenuePercentChange",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Profits_M": {
+          "name": "Profits_M",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ProfitsPercentChange": {
+          "name": "ProfitsPercentChange",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Assets_M": {
+          "name": "Assets_M",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CEO": {
+          "name": "CEO",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Country": {
+          "name": "Country",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "HeadquartersCity": {
+          "name": "HeadquartersCity",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "HeadquartersState": {
+          "name": "HeadquartersState",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Website": {
+          "name": "Website",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "CompanyType": {
+          "name": "CompanyType",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Footnote": {
+          "name": "Footnote",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MarketCap_Updated_M": {
+          "name": "MarketCap_Updated_M",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Updated": {
+          "name": "Updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
