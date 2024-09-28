@@ -14,13 +14,15 @@
       </div>
     </header>
     <main class="md:container px-4 md:px-0 mx-auto py-6 pt-20">
-      <slot />
+      <div v-if="!loading">
+        <slot />
+      </div>
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import SearchInput from "@/components/SearchInput.vue";
 import ViewSwitcher from "@/components/ViewSwitcher.vue";
@@ -30,6 +32,11 @@ const route = useRoute();
 const view = ref<"card" | "table">(
   (route.query.view as "card" | "table") || "card",
 );
+const loading = ref(true);
+
+onMounted(() => {
+  loading.value = false;
+});
 
 watch(view, (newView) => {
   router.push({ query: { ...router.currentRoute.value.query, view: newView } });
