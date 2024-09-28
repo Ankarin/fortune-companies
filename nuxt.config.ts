@@ -1,5 +1,4 @@
 export default defineNuxtConfig({
-  plugins: ["~/plugins/vue-query.ts"],
   app: {
     head: {
       title: "Fortune Companies",

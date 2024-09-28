@@ -1,27 +1,27 @@
 <template>
   <div class="flex items-center space-x-2">
     <Button
-      size="sm"
+      size="icon"
       :variant="modelValue === 'card' ? 'default' : 'outline'"
       @click="$emit('update:modelValue', 'card')"
+      class="w-10 h-10"
     >
-      <GridIcon class="h-4 w-4 mr-2" />
-      Cards
+      <LayoutGridIcon class="h-5 w-5" />
     </Button>
     <Button
-      size="sm"
+      size="icon"
       :variant="modelValue === 'table' ? 'default' : 'outline'"
       @click="$emit('update:modelValue', 'table')"
+      class="w-10 h-10"
     >
-      <TableIcon class="h-4 w-4 mr-2" />
-      Table
+      <TableIcon class="h-5 w-5" />
     </Button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Button } from "@/components/ui/button";
-import { GridIcon, TableIcon } from "lucide-vue-next";
+import { LayoutGridIcon, TableIcon } from "lucide-vue-next";
 
 defineProps<{
   modelValue: "card" | "table";

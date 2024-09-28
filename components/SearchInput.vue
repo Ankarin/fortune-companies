@@ -1,31 +1,41 @@
 <template>
-  <div class="w-full max-w-sm space-y-2">
-    <form @submit.prevent="onSubmit">
-      <div class="relative">
-        <Input
-          v-model="searchQuery"
-          type="search"
-          placeholder="Search companies..."
-        />
-        <Button type="submit" class="absolute right-0 top-0 h-full">
-          <SearchIcon class="h-4 w-4" />
-        </Button>
-      </div>
-    </form>
+  <div class="w-full max-w-md space-y-2">
+    <div class="relative">
+      <Input
+        v-model="localSearchQuery"
+        type="search"
+        placeholder="Search"
+        @input="debouncedSearch"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useQueryClient } from "@tanstack/vue-query";
+import { ref, watch } from "vue";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { SearchIcon } from "lucide-vue-next";
+import { useCompanySearch } from "~/composables/useCompanySearch";
 
-const searchQuery = ref("");
-const queryClient = useQueryClient();
+const { searchQuery, updateSearch } = useCompanySearch();
+const localSearchQuery = ref(searchQuery.value);
 
-const onSubmit = () => {
-  queryClient.invalidateQueries(["companies"]);
+const debounce = (fn: Function, delay: number) => {
+  let timeoutId: NodeJS.Timeout;
+  return (...args: any[]) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
 };
+
+const performSearch = () => {
+  updateSearch(localSearchQuery.value);
+};
+
+const debouncedSearch = debounce(performSearch, 300);
+
+watch(searchQuery, (newValue) => {
+  if (newValue !== localSearchQuery.value) {
+    localSearchQuery.value = newValue;
+  }
+});
 </script>

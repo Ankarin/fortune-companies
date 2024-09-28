@@ -1,42 +1,54 @@
-import { ref } from "vue";
-import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import type { CompanyShort } from "~/server/db/schema";
 
 export const useCompanySearch = () => {
-  const searchQuery = ref("");
-  const queryClient = useQueryClient();
+  const route = useRoute();
+  const router = useRouter();
 
-  const fetchCompanies = async (query: string): Promise<CompanyShort[]> => {
-    const url = query
-      ? `/api/companies?search=${encodeURIComponent(query)}`
-      : "/api/companies";
+  const searchQuery = ref((route.query.search as string) || "");
 
-    if (process.server) {
-      return $fetch(url);
-    } else {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
+  const {
+    data: companies,
+    error,
+    refresh,
+    status,
+  } = useLazyAsyncData<CompanyShort[]>(
+    "companies",
+    () => $fetch("/api/companies", { params: { search: searchQuery.value } }),
+    {
+      watch: [searchQuery],
+      server: true,
+      default: () => [],
+    },
+  );
+
+  const updateSearch = async (newQuery: string) => {
+    searchQuery.value = newQuery;
+    try {
+      await router.push({
+        query: { ...route.query, search: newQuery || undefined },
+      });
+    } catch (err) {
+      console.error("Failed to update search query:", err);
     }
   };
 
-  const query = useQuery({
-    queryKey: ["companies", searchQuery],
-    queryFn: () => fetchCompanies(searchQuery.value),
-  });
-
-  const prefetchCompanies = async () => {
-    await queryClient.prefetchQuery({
-      queryKey: ["companies", ""],
-      queryFn: () => fetchCompanies(""),
-    });
-  };
+  watch(
+    () => route.query.search,
+    (newSearch) => {
+      if (newSearch !== searchQuery.value) {
+        searchQuery.value = newSearch as string;
+      }
+    },
+  );
 
   return {
     searchQuery,
-    ...query,
-    prefetchCompanies,
+    companies,
+    error,
+    isLoading: status.value === "pending",
+    refresh,
+    updateSearch,
   };
 };
