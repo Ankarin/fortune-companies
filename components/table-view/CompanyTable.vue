@@ -1,6 +1,6 @@
 <template>
   <div class="rounded-md border overflow-x-auto">
-    <Table>
+    <Table class="min-w-full">
       <TableHeader>
         <TableRow>
           <TableHead>Rank</TableHead>
