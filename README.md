@@ -28,6 +28,13 @@ REDIS_URL=
     },
   },
 ```
+To seed the database with data run the following commands:
+```bash
+drizzle-kit generate
+drizzle-kit migrate
+```
+
+then run sql script in /db/add_companies.sql
 
 
 ## Setup
