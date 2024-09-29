@@ -9,4 +9,5 @@ export const useViewSwitcherStore = defineStore("viewSwitcher", {
       this.viewMode = mode;
     },
   },
+  persist: true,
 });
