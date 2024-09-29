@@ -10,7 +10,14 @@ export default defineNuxtConfig({
   app: {
     head: {
       title: "Fortune Companies",
-      meta: [{ name: "application-name", content: "Fortune Companies" }],
+      meta: [
+        { name: "application-name", content: "Fortune Companies" },
+        {
+          name: "viewport",
+          content:
+            "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
+        },
+      ],
     },
   },
   plugins: ["~/plugins/vue-query.ts"],

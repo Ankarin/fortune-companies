@@ -20,7 +20,7 @@
           <div class="flex-grow md:w-64">
             <SearchInput />
           </div>
-          <ViewSwitcher v-model="view" />
+          <ViewSwitcher />
         </div>
       </div>
     </header>
