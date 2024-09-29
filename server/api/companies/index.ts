@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event);
   const search = query.search as string | undefined;
   const page = parseInt(query.page as string) || 1;
-  const pageSize = 20;
+  const pageSize = 50;
   const offset = (page - 1) * pageSize;
 
   try {
@@ -65,9 +65,7 @@ export default defineEventHandler(async (event) => {
     return {
       companies: results,
       total: totalCount[0].count,
-      page,
-      pageSize,
-      totalPages: Math.ceil(totalCount[0].count / pageSize),
+      nextPage: results.length === pageSize ? page + 1 : null,
     };
   } catch (error) {
     console.error("Error fetching companies:", error);

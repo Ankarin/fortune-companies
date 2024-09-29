@@ -25,7 +25,7 @@
 definePageMeta({
   layout: false,
 });
-import { computed } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import CompanyCards from "@/components/cards-view/CompanyCards.vue";
 import CompanyTable from "@/components/table-view/CompanyTable.vue";

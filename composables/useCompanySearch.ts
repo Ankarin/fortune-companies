@@ -1,11 +1,12 @@
 import { computed, ref, watch } from "vue";
-import { useQuery } from "@tanstack/vue-query";
+import { useInfiniteQuery } from "@tanstack/vue-query";
 import { useRoute, useRouter } from "vue-router";
 import type { CompanyShort } from "~/server/db/schema";
 
 interface CompanyResponse {
   companies: CompanyShort[];
   total: number;
+  nextPage: number | null;
 }
 
 export const useCompanySearch = () => {
@@ -13,49 +14,30 @@ export const useCompanySearch = () => {
   const router = useRouter();
 
   const searchQuery = ref((route.query.search as string) || "");
-  const currentPage = ref(parseInt(route.query.page as string, 10) || 1);
 
-  const fetchCompanies = async (
-    search: string,
-    page: number,
-  ): Promise<CompanyResponse> => {
-    return await $fetch("/api/companies", {
-      params: { search, page },
+  const fetchCompanies = async ({ pageParam = 1 }) => {
+    return await $fetch<CompanyResponse>("/api/companies", {
+      params: { search: searchQuery.value, page: pageParam },
     });
   };
 
-  const query = useQuery<CompanyResponse, Error>({
-    queryKey: computed(() => [
-      "companies",
-      searchQuery.value,
-      currentPage.value,
-    ]),
-    queryFn: () => fetchCompanies(searchQuery.value, currentPage.value),
+  const query = useInfiniteQuery<CompanyResponse, Error>({
+    queryKey: computed(() => ["companies", searchQuery.value]),
+    queryFn: fetchCompanies,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
   const updateSearch = async (newQuery: string) => {
     searchQuery.value = newQuery;
-    currentPage.value = 1;
-    await updateRouteQuery(newQuery, 1);
+    await updateRouteQuery(newQuery);
   };
 
-  const updatePage = async (newPage: number) => {
-    currentPage.value = newPage;
-    await updateRouteQuery(searchQuery.value, newPage);
-  };
-
-  const updateRouteQuery = async (search: string, page: number) => {
+  const updateRouteQuery = async (search: string) => {
     try {
       const query: Record<string, string | undefined> = {
         ...route.query,
         search: search || undefined,
       };
-
-      if (route.name === "index") {
-        query.page = page.toString();
-      } else {
-        delete query.page;
-      }
 
       await router.push({ query });
     } catch (err) {
@@ -67,31 +49,21 @@ export const useCompanySearch = () => {
     () => route.query,
     () => {
       searchQuery.value = (route.query.search as string) || "";
-      currentPage.value = parseInt(route.query.page as string, 10) || 1;
     },
   );
 
-  const total = ref(0);
+  const companies = computed(() => query.data.value?.pages.flatMap(page => page.companies) || []);
+  const total = computed(() => query.data.value?.pages[0]?.total || 0);
 
-  watch(
-    () => query.data.value,
-    (newData) => {
-      if (newData) {
-        total.value = newData.total;
-      }
-    },
-  );
-
-  const companies = computed(() => query.data.value?.companies || []);
-  console.log(currentPage.value);
   return {
     searchQuery,
-    currentPage,
     companies,
     total,
-    isPending: query.isPending,
+    isPending: query.isLoading,
     error: query.error,
+    fetchNextPage: query.fetchNextPage,
+    hasNextPage: query.hasNextPage,
+    isFetchingNextPage: query.isFetchingNextPage,
     updateSearch,
-    updatePage,
   };
 };

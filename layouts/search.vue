@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background flex flex-col">
+  <div class="min-h-screen bg-background flex flex-col" @scroll="handleScroll">
     <header class="border-b fixed top-0 left-0 right-0 bg-background z-10">
       <div
         class="md:container px-4 mx-auto h-14 flex justify-between items-center"
@@ -25,24 +25,19 @@
       </div>
     </header>
     <main class="md:container px-4 mx-auto py-6 pt-20 pb-16">
-      <div class="flex-grow">
-        <slot />
+      <slot />
+      <div v-if="isFetchingNextPage" class="text-center">
+        <p class="mt-2 text-sm text-gray-500">Loading more companies...</p>
       </div>
     </main>
-    <footer class="fixed bottom-0 left-0 right-0 bg-background z-10">
-      <div class="md:container px-3 mx-auto py-3 flex justify-center">
-        <PaginationComponent :total="total" v-model:currentPage="currentPage" />
-      </div>
-    </footer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, onUnmounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import SearchInput from "@/components/SearchInput.vue";
 import ViewSwitcher from "@/components/ViewSwitcher.vue";
-import PaginationComponent from "@/components/PaginationComponent.vue";
 import { useCompanySearch } from "~/composables/useCompanySearch";
 
 const router = useRouter();
@@ -60,9 +55,20 @@ watch(view, (newView) => {
   router.push({ query: { ...router.currentRoute.value.query, view: newView } });
 });
 
-const { currentPage, total, updatePage } = useCompanySearch();
+const { fetchNextPage, hasNextPage, isFetchingNextPage } = useCompanySearch();
 
-watch(currentPage, (newPage) => {
-  updatePage(newPage);
+const handleScroll = () => {
+  const bottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
+  if (bottom && hasNextPage.value) {
+    fetchNextPage();
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
 });
 </script>
