@@ -1,4 +1,5 @@
 export default defineNuxtConfig({
+  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "nuxt-security"],
   ssr: true,
   app: {
     head: {
@@ -29,20 +30,25 @@ export default defineNuxtConfig({
     preset: "vercel",
   },
 
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt"],
-
   shadcn: {
-    /**
-     * Prefix for all the imported component
-     */
     prefix: "",
-    /**
-     * Directory that the component lives in.
-     * @default "./components/ui"
-     */
     componentDir: "/components/ui",
   },
 
-  // ignore: ['/components/ui/*'],
   compatibilityDate: "2024-09-27",
+
+  devtools: {
+    enabled: true,
+  },
+
+  security: {
+    rateLimiter: {
+      driver: {
+        name: "redis",
+        options: {
+          url: process.env.REDIS_URL as string,
+        },
+      },
+    },
+  },
 });
