@@ -2,16 +2,16 @@
   <div class="flex items-center space-x-2">
     <Button
       size="icon"
-      :variant="modelValue === 'card' ? 'default' : 'outline'"
-      @click="$emit('update:modelValue', 'card')"
+      :variant="viewMode === 'card' ? 'default' : 'outline'"
+      @click="setViewMode('card')"
       class="w-10 h-10"
     >
       <LayoutGridIcon class="h-5 w-5" />
     </Button>
     <Button
       size="icon"
-      :variant="modelValue === 'table' ? 'default' : 'outline'"
-      @click="$emit('update:modelValue', 'table')"
+      :variant="viewMode === 'table' ? 'default' : 'outline'"
+      @click="setViewMode('table')"
       class="w-10 h-10"
     >
       <TableIcon class="h-5 w-5" />
@@ -20,14 +20,12 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useViewSwitcherStore } from "~/stores/switcherStore";
 import { Button } from "@/components/ui/button";
 import { LayoutGridIcon, TableIcon } from "lucide-vue-next";
 
-defineProps<{
-  modelValue: "card" | "table";
-}>();
-
-defineEmits<{
-  (e: "update:modelValue", value: "card" | "table"): void;
-}>();
+const viewSwitcherStore = useViewSwitcherStore();
+const { viewMode } = storeToRefs(viewSwitcherStore);
+const { setViewMode } = viewSwitcherStore;
 </script>

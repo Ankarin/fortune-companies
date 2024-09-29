@@ -1,5 +1,5 @@
 export default defineNuxtConfig({
-  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "nuxt-security"],
+  modules: ["@nuxtjs/tailwindcss", "shadcn-nuxt", "nuxt-security", "@pinia/nuxt"],
   ssr: true,
   app: {
     head: {

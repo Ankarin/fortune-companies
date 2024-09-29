@@ -31,18 +31,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import SearchInput from "@/components/SearchInput.vue";
 import ViewSwitcher from "@/components/ViewSwitcher.vue";
-
-const router = useRouter();
-const route = useRoute();
-const view = ref<"card" | "table">(
-  (route.query.view as "card" | "table") || "card",
-);
-
-watch(view, (newView) => {
-  router.push({ query: { ...router.currentRoute.value.query, view: newView } });
-});
 </script>

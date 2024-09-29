@@ -14,7 +14,7 @@
         </p>
       </div>
       <template v-else>
-        <CompanyCards v-if="view === 'card'" :companies="companies" />
+        <CompanyCards v-if="viewMode === 'card'" :companies="companies" />
         <CompanyTable :companies="companies" v-else />
       </template>
     </template>
@@ -26,19 +26,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from "vue";
-import { useRoute } from "vue-router";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
 import CompanyCards from "@/components/cards-view/CompanyCards.vue";
 import CompanyTable from "@/components/table-view/CompanyTable.vue";
 import { useCompanySearch } from "~/composables/useCompanySearch";
+import { useViewSwitcherStore } from "~/stores/switcherStore";
+import { storeToRefs } from "pinia";
 
 definePageMeta({
   layout: false,
 });
-
-const route = useRoute();
-const view = computed(() => (route.query.view as "card" | "table") || "card");
 
 const {
   companies,
@@ -48,8 +46,10 @@ const {
   hasNextPage,
   isFetchingNextPage,
 } = useCompanySearch();
-
 const sentinel = ref<HTMLElement | null>(null);
+
+const viewSwitcherStore = useViewSwitcherStore();
+const { viewMode } = storeToRefs(viewSwitcherStore);
 
 onMounted(() => {
   if (sentinel.value) {
