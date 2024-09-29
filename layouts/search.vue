@@ -27,7 +27,7 @@
     <main class="md:container px-4 mx-auto py-6 pt-20 pb-16">
       <slot />
       <div v-if="isFetchingNextPage" class="text-center">
-        <p class="mt-2 text-sm text-gray-500">Loading more companies...</p>
+        <p class="text-lg mt-2">Loading companies...</p>
       </div>
     </main>
   </div>
@@ -58,17 +58,18 @@ watch(view, (newView) => {
 const { fetchNextPage, hasNextPage, isFetchingNextPage } = useCompanySearch();
 
 const handleScroll = () => {
-  const bottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
+  const bottom =
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
   if (bottom && hasNextPage.value) {
     fetchNextPage();
   }
 };
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
+  window.removeEventListener("scroll", handleScroll);
 });
 </script>

@@ -1,14 +1,11 @@
 <template>
   <div class="container mx-auto px-4 py-4">
-    <div v-if="isPending" class="text-center">
-      <div
-        class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto"
-      ></div>
-      <p class="text-lg mt-2">Loading company details...</p>
-    </div>
-    <div v-else-if="error" class="text-center text-red-600">
+    <div v-if="error" class="text-center text-red-600">
       <Icon name="lucide:alert-circle" class="w-12 h-12 mx-auto mb-2" />
-      <p class="text-lg">Error: {{ error.message }}</p>
+      <p class="text-lg mb-4">Sorry, company not found.</p>
+      <NuxtLink to="/">
+        <Button> Go Back </Button>
+      </NuxtLink>
     </div>
     <div
       v-else-if="company"
@@ -18,9 +15,7 @@
         class="bg-primary text-primary-foreground p-4 cursor-pointer hover:bg-primary-600 transition-colors duration-300"
       >
         <div class="flex items-center justify-between">
-          <h1
-            class="text-2xl font-bold hover:underline break-words mr-2 flex-grow"
-          >
+          <h1 class="text-2xl font-bold break-words mr-2 flex-grow">
             {{ company.company }}
           </h1>
           <div
@@ -166,36 +161,29 @@
       </div>
     </div>
     <div v-else class="text-center">
-      <Icon name="lucide:file-question" class="w-12 h-12 mx-auto mb-2" />
+      <Icon name="lucid:file-question" class="w-12 h-12 mx-auto mb-2" />
       <p class="text-lg">No company data available.</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { useQuery } from "@tanstack/vue-query";
 import { Badge } from "@/components/ui/badge";
 import type { Company } from "~/server/db/schema";
 import { formatNumber } from "~/lib/utils";
+import { Button } from "~/components/ui/button";
 
 const route = useRoute();
 const companyId = route.params.id as string;
 
-const fetchCompany = async (id: string): Promise<Company> => {
-  const response = await fetch(`/api/companies/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch company details");
-  }
-  return response.json();
-};
-
-const {
-  data: company,
-  isPending,
-  error,
-} = useQuery<Company, Error>({
-  queryKey: ["company", companyId],
-  queryFn: () => fetchCompany(companyId),
-});
+const { data: company, error } = await useAsyncData<Company>(
+  "company",
+  () => $fetch(`/api/companies/${companyId}`),
+  {
+    transform: (data) => {
+      if (!data) throw new Error("Company not found");
+      return data;
+    },
+  },
+);
 </script>

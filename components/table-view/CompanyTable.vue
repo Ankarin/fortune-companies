@@ -36,15 +36,15 @@
           <TableCell>
             {{ company.headquartersState }}, {{ company.headquartersCity }}
           </TableCell>
-          <TableCell>${{ formatNumber(company.marketCapMarch28M) }}</TableCell>
+          <TableCell>{{ formatCurrency(company.marketCapMarch28M) }}</TableCell>
           <TableCell>{{ formatNumber(company.numberOfEmployees) }}</TableCell>
           <TableCell>
             <Badge :variant="company.profitable ? 'default' : 'destructive'">
               {{ company.profitable ? "Yes" : "No" }}
             </Badge>
           </TableCell>
-          <TableCell>${{ formatNumber(company.profitsM) }}</TableCell>
-          <TableCell>${{ formatNumber(company.revenuesM) }}</TableCell>
+          <TableCell>{{ formatCurrency(company.profitsM) }}</TableCell>
+          <TableCell>{{ formatCurrency(company.revenuesM) }}</TableCell>
           <TableCell>
             <a
               v-if="company.website"
@@ -75,7 +75,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "vue-router";
 import type { CompanyShort } from "~/server/db/schema";
-import { formatNumber } from "../../lib/utils";
+import { formatNumber, formatCurrency } from "~/lib/utils";
 
 const router = useRouter();
 

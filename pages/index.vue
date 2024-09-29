@@ -5,7 +5,10 @@
     </div>
     <template v-else>
       <div v-if="isPending && !companies.length" class="text-center">
-        <p class="mt-2 text-sm text-gray-500">Loading companies...</p>
+        <div
+          class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary mx-auto"
+        ></div>
+        <p class="text-lg mt-2">Loading companies...</p>
       </div>
       <div v-else-if="!isPending && !companies.length" class="text-center">
         <p class="text-lg font-semibold text-gray-700">No companies found</p>
