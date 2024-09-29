@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-background flex flex-col" @scroll="handleScroll">
+  <div class="min-h-screen bg-background flex flex-col">
     <header class="border-b fixed top-0 left-0 right-0 bg-background z-10">
       <div
         class="md:container px-4 mx-auto h-14 flex justify-between items-center"
@@ -26,50 +26,23 @@
     </header>
     <main class="md:container px-4 mx-auto py-6 pt-20 pb-16">
       <slot />
-      <div v-if="isFetchingNextPage" class="text-center">
-        <p class="text-lg mt-2">Loading companies...</p>
-      </div>
     </main>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted } from "vue";
+import { ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import SearchInput from "@/components/SearchInput.vue";
 import ViewSwitcher from "@/components/ViewSwitcher.vue";
-import { useCompanySearch } from "~/composables/useCompanySearch";
 
 const router = useRouter();
 const route = useRoute();
 const view = ref<"card" | "table">(
   (route.query.view as "card" | "table") || "card",
 );
-const loading = ref(true);
-
-onMounted(() => {
-  loading.value = false;
-});
 
 watch(view, (newView) => {
   router.push({ query: { ...router.currentRoute.value.query, view: newView } });
-});
-
-const { fetchNextPage, hasNextPage, isFetchingNextPage } = useCompanySearch();
-
-const handleScroll = () => {
-  const bottom =
-    window.innerHeight + window.scrollY >= document.body.offsetHeight - 2;
-  if (bottom && hasNextPage.value) {
-    fetchNextPage();
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-});
-
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
 });
 </script>
